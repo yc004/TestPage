@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
-    <canvas id="mainCanvas" width="600" height="400">
-        当前浏览器不支持,请更新
-    </canvas>
+<canvas id="mainCanvas" width="600" height="400">
+    当前浏览器不支持,请更新
+</canvas>
 </body>
 <script>
     let mainCanvas = document.getElementById('mainCanvas');
@@ -23,6 +23,113 @@
     function resizeCanvas() {
         $('#mainCanvas').attr('width', $(window).get(0).innerWidth)
             .attr('height', $(window).get(0).innerHeight);
+    }
+
+    // 烟花主体类
+    class fireWork {
+        get x() {
+            return this._x;
+        }
+
+        set x(value) {
+            this._x = value;
+        }
+
+        get y() {
+            return this._y;
+        }
+
+        set y(value) {
+            this._y = value;
+        }
+
+        get explodeHeight() {
+            return this._explodeHeight;
+        }
+
+        set explodeHeight(value) {
+            this._explodeHeight = value;
+        }
+
+        get speed() {
+            return this._speed;
+        }
+
+        set speed(value) {
+            this._speed = value;
+        }
+
+        get color() {
+            return this._color;
+        }
+
+        set color(value) {
+            this._color = value;
+        }
+
+        constructor(x, y, explodeHeight, speed, color) {
+            this._x = x;
+            this._y = y;
+            this._explodeHeight = explodeHeight;
+            this._speed = speed;
+            this._color = color;
+        }
+
+        raise() {
+
+        }
+    }
+
+    class Particles {
+
+        constructor(x, y, color, speed, radium) {
+            this._x = x;
+            this._y = y;
+            this._color = color;
+            this._speed = speed;
+            this._radium = radium;
+        }
+
+
+        get x() {
+            return this._x;
+        }
+
+        set x(value) {
+            this._x = value;
+        }
+
+        get y() {
+            return this._y;
+        }
+
+        set y(value) {
+            this._y = value;
+        }
+
+        get color() {
+            return this._color;
+        }
+
+        set color(value) {
+            this._color = value;
+        }
+
+        get speed() {
+            return this._speed;
+        }
+
+        set speed(value) {
+            this._speed = value;
+        }
+
+        get radium() {
+            return this._radium;
+        }
+
+        set radium(value) {
+            this._radium = value;
+        }
     }
 
 
