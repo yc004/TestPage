@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <title>测试页面</title>
@@ -9,13 +9,14 @@
 </head>
 <body>
 <canvas id="myCanvas" width="600" height="400">当前浏览器不支持canvas</canvas>
-<div class="canvasTools">
-    <input type="button" value="清除" onclick="drawBG()" id="cleanCanvas" class="canvasTool">
-    <input type="button" value="设置画笔粗细" onclick="drawBG()" id="setPainter" class="canvasTool">
-</div>
+<nav class="canvasTools" id="toolBox">
+    <input type="button" value="开始" onclick="" id="start" class="canvasTool"><br>
+    <input type="button" value="暂停" onclick="" id="pause" class="canvasTool">
+</nav>
 
 <script>
     let mainCanvas = document.getElementById('myCanvas');
+    let nav = document.getElementById('toolBox');
     let context = mainCanvas.getContext('2d');
     context.fillRect(0, 0, 600, 400);
 
@@ -32,31 +33,61 @@
         drawBG();
     }
 
+    // 游戏主循环
+    let BGposition = mainCanvas.width;
+    let direction = false; // 物体移动方向
+    let speed = 5; // 物体移动速度
+    let size = {width: 100, height: 100} // 物体尺寸
+
+
+    let mainLoop;
+
+    function gameMainLoop() {
+        let tempWidth = size.width;
+
+/*
+        // 物体在碰撞到墙壁时的缓冲压缩效果
+        function buff(direction) {
+            context.fillStyle = 'pink';
+            context.fillRect(BGposition, mainCanvas.height / 2, tempWidth, size.height);
+            tempWidth = direction ? tempWidth - 3 : tempWidth + 3;
+
+            if (tempWidth <= 0) {
+                cancelAnimationFrame(this);
+            }
+            requestAnimationFrame(buff);
+        }
+*/
+
+        context.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+        drawBG();
+        if (BGposition <= nav.offsetWidth || BGposition + 100 >= mainCanvas.width) {
+            direction = !direction;
+            // requestAnimationFrame(buff);
+        }
+        if (direction) {
+            BGposition += speed;
+        } else {
+            BGposition -= speed;
+        }
+        context.fillStyle = 'pink';
+        context.fillRect(BGposition, mainCanvas.height / 2, size.width, size.height);
+        mainLoop = requestAnimationFrame(gameMainLoop);
+    }
+
+
     // 绘制背景
     function drawBG() {
         context.fillStyle = '#000000';
         context.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
     }
 
-    let mouseDown = false;
-    mainCanvas.addEventListener('mousedown', (e) => {
-        mouseDown = true;
-        context.moveTo(e.offsetX, e.offsetY);
+    document.getElementById('start').addEventListener('click', () => {
+        requestAnimationFrame(gameMainLoop);
     });
 
-    mainCanvas.addEventListener('mousemove', (e) => {
-        if (mouseDown) {
-            context.beginPath();
-            context.fillStyle = 'white';
-            context.arc(e.offsetX, e.offsetY, 5, 0, Math.PI * 2);
-            context.fill();
-            context.closePath();
-            context.moveTo(e.offsetX, e.offsetY);
-        }
-    });
-
-    mainCanvas.addEventListener('mouseup', () => {
-        mouseDown = false;
+    document.getElementById('pause').addEventListener('click', () => {
+        cancelAnimationFrame(mainLoop);
     });
 
 

@@ -13,11 +13,30 @@ body, html {
 .canvasTool {
     width: 60px;
     height: 30px;
-    margin: 30%;
+    margin-top: 10px;
+    margin-left: 25%;
+    background-color: burlywood;
+    border: none;
+    border-radius: 3px;
+}
+
+.canvasTool:nth-child(1) {
+    margin-top: 100px;
+}
+
+
+.canvasTool:hover {
+    border: aqua solid;
+    box-shadow: darksalmon 3px 3px 3px;
+
+
 }
 
 .canvasTools {
-    position: relative;
-
+    width: 100px;
+    height: 100%;
+    position: absolute;
+    background-color: aliceblue;
+    opacity: 30%;
 }
 
