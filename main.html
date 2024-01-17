@@ -1,21 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>主页</title>
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" href="main.css">
-    <script>
-        import * as PIXI from 'pixi.js';
-
-        const app = new PIXI.Application({
-            background: '#dea6a6',
-            resizeTo: window,
-        });
-
-        document.body.appendChild(app.view());
-    </script>
 </head>
 <body>
-    <div>This is the main page</div>
+    <canvas id="mainCanvas" width="600" height="400">
+        当前浏览器不支持,请更新
+    </canvas>
 </body>
+<script>
+    let mainCanvas = document.getElementById('mainCanvas');
+    let context = mainCanvas.getContext('2d');
+
+    $(function () {
+        $(window).resize(resizeCanvas);
+        resizeCanvas();
+    })
+
+    function resizeCanvas() {
+        $('#mainCanvas').attr('width', $(window).get(0).innerWidth)
+            .attr('height', $(window).get(0).innerHeight);
+    }
+
+
+</script>
 </html>

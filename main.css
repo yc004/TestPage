@@ -1,8 +1,21 @@
-div {
-    font-size: 50px;
+/*让canvas画板充当整个页面的背景 不影响其他元素的排列*/
+#mainCanvas {
     display: block;
     float: left;
-    font-family: "HarmonyOS Sans", serif;
-    mso-font-width: 10px;
-    align-content: baseline;
+    margin: 0 auto;
+    background-color: black;
+    position: absolute;
+    z-index: -1;
+}
+
+/*让canvas充满整个窗口*/
+html body {
+    margin: 0;
+    background-color: black;
+}
+
+
+/*取消浏览器的滚动条*/
+::-webkit-scrollbar {
+    display: none;
 }
