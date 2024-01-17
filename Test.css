@@ -1,0 +1,12 @@
+#myCanvas {
+    position: absolute;
+    z-index: -1;
+    display: block;
+    margin: 0 auto;
+
+}
+
+#main {
+    display: block;
+    margin: 0 auto;
+}

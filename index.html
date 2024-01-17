@@ -8,54 +8,58 @@
 
     <!-- 使用 CDN 引入 jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
 </head>
 <body>
-<canvas id="mainCanvas" width="600" height="400">
+<canvas id="mainCanvas" width="800" height="800">
     当前浏览器不兼容,请下载最新版浏览器
-    <a href="https://www.baidu.com"></a>
+    <a href="https://www.google.com/chrome/"></a>
 </canvas>
 
+<img src="./src/img/titleIcon.png" alt="img" id="fillImg">
+
+<button id="switch" onclick="window.location.href='main.html'" type="button">进入主页面</button>
 
 <script>
     let mainCanvas = document.getElementById('mainCanvas');
     let ctx = mainCanvas.getContext('2d');
-    let body = document.getElementsByTagName('body');
 
-    // 实时调整canvas画布的大小
-    $(function () {
-        $(window).resize(resizeCanvas);
-        resizeCanvas();
-    });
-
-    function resizeCanvas() {
-        $('#mainCanvas').attr('width', $(window).get(0).innerWidth)
-            .attr('height', $(window).get(0).innerHeight);
-        console.log(mainCanvas.width, mainCanvas.height);
-    }
-
-
+    // 移动速度
     let vx = 0.5;
     let vy = 0.5;
-    let x = 0;
-    let y = 0;
+
+    // 初始位置
+    let x = mainCanvas.offsetWidth / 2;
+    let y = mainCanvas.offsetHeight / 2;
+
+    // 矩形尺寸
     let width = 150;
     let height = 150;
 
-
+    // 渐变关键帧位置
     let position = 0;
+
     function render() {
         position += 0.001;
         if (position >= 1) {
             position = 0;
         }
         ctx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
-        let radialGradient = ctx.createRadialGradient(x + width, y + height, 0, x + width, y + height, Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)));
+
+        // 渐变色填充形状
+        let radialGradient = ctx.createRadialGradient(x + width,
+            y + height,
+            0,
+            x + width,
+            y + height,
+            Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)));
         radialGradient.addColorStop(0, 'blue');
         radialGradient.addColorStop(position, '#ce6fce')
-        radialGradient.addColorStop(1, 'red');
         ctx.fillStyle = radialGradient;
+        radialGradient.addColorStop(1, 'red');
         ctx.fillRect(x, y, width, height);
+
+
+        // 偏移
         x += vx;
         y += vy;
         if (x + width >= mainCanvas.width || x <= 0) {

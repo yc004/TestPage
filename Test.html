@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试页面</title>
+    <link rel="stylesheet" href="Test.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+</head>
+<body>
+<div id="main">
+    <canvas id="myCanvas" width="600" height="400">当前浏览器不支持canvas</canvas>
+</div>
+
+<script>
+    $(function () {
+        $(window).resize(resizeCanvas);
+        resizeCanvas();
+    });
+
+    function resizeCanvas() {
+        $('#myCanvas').attr('width', $(window).get(0).innerWidth())
+            .attr('height', $(window).get(0).innerHeight());
+    }
+
+    let myCanvas = document.getElementById('myCanvas');
+
+    let context = myCanvas.getContext('2d');
+    context.fillStyle = '#d7d7a3';
+    context.fillRect(0, 0, myCanvas.width, myCanvas.height);
+
+
+</script>
+</body>
+</html>

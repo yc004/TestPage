@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+    <link rel="stylesheet" href="main.css">
+    <script>
+        import * as PIXI from 'pixi.js';
+
+        const app = new PIXI.Application({
+            background: '#dea6a6',
+            resizeTo: window,
+        });
+
+        document.body.appendChild(app.view());
+    </script>
+</head>
+<body>
+    <div>This is the main page</div>
+</body>
+</html>

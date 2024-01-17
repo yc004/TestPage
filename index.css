@@ -1,5 +1,5 @@
 body, html {
-    background-color: black;
+    background-color: antiquewhite;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -7,8 +7,30 @@ body, html {
 }
 
 canvas {
+    background-color: black;
+    width: 400px;
+    height: 400px;
     display: block;
+    margin: 0 auto;
 }
 
+img {
+    display: none;
+}
+
+#switch {
+    width: 100px;
+    height: 30px;
+    display: block;
+    margin: 100px auto 0;
+    background-color: orange;
+    border-radius: 3px;
+    border: none;
+}
+
+#switch:hover {
+    background-color: darkorange;
+    border: black;
+}
 
 
