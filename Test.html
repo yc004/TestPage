@@ -8,26 +8,56 @@
 
 </head>
 <body>
-<div id="main">
-    <canvas id="myCanvas" width="600" height="400">当前浏览器不支持canvas</canvas>
+<canvas id="myCanvas" width="600" height="400">当前浏览器不支持canvas</canvas>
+<div class="canvasTools">
+    <input type="button" value="清除" onclick="drawBG()" id="cleanCanvas" class="canvasTool">
+    <input type="button" value="设置画笔粗细" onclick="drawBG()" id="setPainter" class="canvasTool">
 </div>
 
 <script>
+    let mainCanvas = document.getElementById('myCanvas');
+    let context = mainCanvas.getContext('2d');
+    context.fillRect(0, 0, 600, 400);
+
+    // 实时调整canvas画布的大小
     $(function () {
         $(window).resize(resizeCanvas);
         resizeCanvas();
     });
 
     function resizeCanvas() {
-        $('#myCanvas').attr('width', $(window).get(0).innerWidth())
-            .attr('height', $(window).get(0).innerHeight());
+        $('#myCanvas').attr('width', $(window).get(0).innerWidth)
+            .attr('height', $(window).get(0).innerHeight);
+        // 每次调整完大小后重绘背景
+        drawBG();
     }
 
-    let myCanvas = document.getElementById('myCanvas');
+    // 绘制背景
+    function drawBG() {
+        context.fillStyle = '#000000';
+        context.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
+    }
 
-    let context = myCanvas.getContext('2d');
-    context.fillStyle = '#d7d7a3';
-    context.fillRect(0, 0, myCanvas.width, myCanvas.height);
+    let mouseDown = false;
+    mainCanvas.addEventListener('mousedown', (e) => {
+        mouseDown = true;
+        context.moveTo(e.offsetX, e.offsetY);
+    });
+
+    mainCanvas.addEventListener('mousemove', (e) => {
+        if (mouseDown) {
+            context.beginPath();
+            context.fillStyle = 'white';
+            context.arc(e.offsetX, e.offsetY, 5, 0, Math.PI * 2);
+            context.fill();
+            context.closePath();
+            context.moveTo(e.offsetX, e.offsetY);
+        }
+    });
+
+    mainCanvas.addEventListener('mouseup', () => {
+        mouseDown = false;
+    });
 
 
 </script>
