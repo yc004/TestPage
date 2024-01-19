@@ -15,6 +15,7 @@
     let mainCanvas = document.getElementById('mainCanvas');
     let context = mainCanvas.getContext('2d');
 
+    // 用于设置canvas画布大小永远充满窗口
     $(function () {
         $(window).resize(resizeCanvas);
         resizeCanvas();
@@ -25,112 +26,131 @@
             .attr('height', $(window).get(0).innerHeight);
     }
 
-    // 烟花主体类
-    class fireWork {
-        get x() {
-            return this._x;
+    colors = ['#17B2C9',
+        '#FF0000',
+        '#00FF00',
+        '#0000FF',
+        '#FFFF00',
+        '#FF00FF',
+        '#00FFFF',
+        '#808080',
+        '#FFA500',
+        '#8B008B'
+    ]
+
+
+    // 烟花类
+    class fireWorks {
+        // 烟花主体粒子列表
+        fireWorkList = [];
+        // 烟花爆炸后粒子列表
+        explodeParticles = [];
+
+        constructor(initialCount) {
+            for (let i = 0; i < initialCount; i++) {
+                this.fireWorkList[i] = new Particles(Math.random() * window.innerWidth,
+                    window.innerHeight - Math.random() * 30, 0,
+                    Math.random() * 3 + 1,
+                    colors[Math.floor(Math.random() * colors.length)]);
+            }
         }
 
-        set x(value) {
-            this._x = value;
+        // 刷新烟花位置
+        update() {
+            for (let i = 0; i < this.fireWorkList.length; i++) {
+                this.fireWorkList[i].run();
+                // 判断烟花主体是否到达指定的爆炸高度
+                if (this.fireWorkList[i].vy <= 0.01) {
+                    this.explode(this.fireWorkList[i]);
+                    this.fireWorkList.splice(i, 1);
+                }
+            }
+
+            // 爆炸粒子移动
+            for (let i = 0; i < this.explodeParticles.length; i++) {
+                this.explodeParticles[i].run();
+                if (this.explodeParticles[i].x >= mainCanvas.width || this.explodeParticles[i].x <= 0
+                    || this.explodeParticles[i].y >= mainCanvas.height || this.explodeParticles[i].y <= 0) {
+                    this.explodeParticles.splice(i, 1);
+                }
+            }
+
+            // 随机生成新的烟花
+            if (Math.random() < 0.03) {
+                this.fireWorkList.push(new Particles(Math.random() * window.innerWidth,
+                    window.innerHeight - Math.random() * 30, 0,
+                    Math.random() * 3 + 1,
+                    colors[Math.floor(Math.random() * colors.length)]))
+            }
         }
 
-        get y() {
-            return this._y;
+
+        explode(particle) {
+            let speed = 4;
+            let explodeCount = 200;
+            // for (let j = explodeCount && speed > 0; j > 0; j -= 10) {
+                for (let i = 0; i < j; i++) {
+                    this.explodeParticles.push(new Particles(particle.x, particle.y, speed * Math.cos(Math.PI * 2 / j * i), speed * Math.sin(Math.PI * 2 / j * i), particle.color));
+                    // console.log("*");
+                }
+                // speed -= 0.001;
+            // }
         }
 
-        set y(value) {
-            this._y = value;
-        }
+        render() {
+            for (let i = 0; i < this.fireWorkList.length; i++) {
+                // 渲染烟花主体
+                context.fillStyle = this.fireWorkList[i].color;
+                context.beginPath();
+                context.arc(this.fireWorkList[i].x, this.fireWorkList[i].y, 3, 0, Math.PI * 2);
+                context.fill();
+                context.closePath();
+            }
 
-        get explodeHeight() {
-            return this._explodeHeight;
-        }
+            // 渲染爆炸后的粒子
+            for (let i = 0; i < this.explodeParticles.length; i++) {
+                context.fillStyle = this.explodeParticles[i].color;
+                context.beginPath();
+                context.arc(this.explodeParticles[i].x, this.explodeParticles[i].y, 1, 0, Math.PI * 2);
+                context.fill();
+                context.closePath();
 
-        set explodeHeight(value) {
-            this._explodeHeight = value;
-        }
-
-        get speed() {
-            return this._speed;
-        }
-
-        set speed(value) {
-            this._speed = value;
-        }
-
-        get color() {
-            return this._color;
-        }
-
-        set color(value) {
-            this._color = value;
-        }
-
-        constructor(x, y, explodeHeight, speed, color) {
-            this._x = x;
-            this._y = y;
-            this._explodeHeight = explodeHeight;
-            this._speed = speed;
-            this._color = color;
-        }
-
-        raise() {
-
+            }
         }
     }
 
     class Particles {
-
-        constructor(x, y, color, speed, radium) {
-            this._x = x;
-            this._y = y;
-            this._color = color;
-            this._speed = speed;
-            this._radium = radium;
+        constructor(x, y, vx, vy, color, radium = 0) {
+            this.x = x;
+            this.y = y;
+            this.vx = vx;
+            this.vy = vy;
+            this.color = color;
         }
 
-
-        get x() {
-            return this._x;
+        run() {
+            this.x -= this.vx;
+            this.y -= this.vy;
+            // if (this.vx !== 0) {
+            //     this.vx = this.vx > 0 ? this.vx - 0.01 : this.vx + 0.01;
+            // }
+            this.vy -= 0.015;
         }
 
-        set x(value) {
-            this._x = value;
-        }
-
-        get y() {
-            return this._y;
-        }
-
-        set y(value) {
-            this._y = value;
-        }
-
-        get color() {
-            return this._color;
-        }
-
-        set color(value) {
-            this._color = value;
-        }
-
-        get speed() {
-            return this._speed;
-        }
-
-        set speed(value) {
-            this._speed = value;
-        }
-
-        get radium() {
-            return this._radium;
-        }
-
-        set radium(value) {
-            this._radium = value;
-        }
     }
+
+
+    Fireworks = new fireWorks(10);
+
+    // 主循环
+    function main() {
+        context.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+        Fireworks.update();
+        Fireworks.render();
+        requestAnimationFrame(main);
+    }
+
+    main()
 
 
 </script>
